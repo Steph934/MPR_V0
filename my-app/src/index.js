@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './views/App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router } from 'react-router-dom'
+import { HelmetProvider } from 'react-helmet-async'
+import App from './views/App';
+import './index.css';
 
 // Font import
 import '@fontsource/roboto/300.css';
@@ -14,9 +15,11 @@ import '@fontsource/roboto/700.css';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Router>
-      <App />
-    </Router>
+    <HelmetProvider>
+      <Router>
+        <App />
+      </Router>
+    </HelmetProvider>
   </React.StrictMode>
 );
 

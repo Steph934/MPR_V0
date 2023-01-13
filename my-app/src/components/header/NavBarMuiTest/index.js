@@ -12,28 +12,20 @@ import Stack from '@mui/material/Stack';
 import { ThemeProvider } from '@mui/material/styles';
 import custom from '../../../services/colorCustom';
 
+// LINK React
+import { Link } from 'react-router-dom';
+// source : https://reactrouter.com/en/main/components/link
 
 export default function MenuListComposition() {
 
-  const [number, setNumber] = React.useState('');
-
   const [open, setOpen] = React.useState(false);
-
 
   const anchorRef = React.useRef(null);
 
   const handleToggle = () => {
+
     setOpen((prevOpen) => !prevOpen);
 
-/*
- !!open = false donc (!!open === true)
- !open = false donc (!!open === false)
-*/
-    if (!!open) {
-      setNumber('Fermé')
-    } else {
-      setNumber('Ouvert')
-    }
   };
 
   const handleClose = (event) => {
@@ -65,9 +57,6 @@ export default function MenuListComposition() {
 
   return (
     <Stack direction="row" spacing={2}>
-      <p>
-          test : {number}
-      </p>
       <div>
       <ThemeProvider theme={custom}>
         <Button
@@ -109,9 +98,19 @@ export default function MenuListComposition() {
                     aria-labelledby="composition-button"
                     onKeyDown={handleListKeyDown}
                   >
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={handleClose}>My account</MenuItem>
-                    <MenuItem onClick={handleClose}>Logout</MenuItem>
+                    <MenuItem onClick={handleClose}>
+                      <Link to='..' relative="path">
+                        Home
+                      </Link>
+                    </MenuItem>
+                    <MenuItem onClick={handleClose}>
+                      <Link to='/about' relative="path">
+                        About
+                      </Link>
+                    </MenuItem>
+                    <MenuItem onClick={handleClose}>
+                      Logout
+                    </MenuItem>
                   </MenuList>
                 </ClickAwayListener>
               </Paper>

@@ -1,11 +1,11 @@
 import './style.css'
 
-const Home = () => {
+const login = () => {
     return (
         <div>
-            accueil
+            ICI on se LoG !
         </div>
     )
 }
 
-export default Home
+export default login
