@@ -4,8 +4,13 @@ import { alpha } from '@mui/material/styles';
 import { Box, MenuItem, Stack, IconButton, Popover } from '@mui/material';
 
 // ----------------------------------------------------------------------
-
+// NOTE - déplacement langue 
 const LANGS = [
+  {
+    value: 'fr',
+    label: 'French',
+    icon: '/assets/icons/ic_flag_fr.svg',
+  },
   {
     value: 'en',
     label: 'English',
@@ -15,11 +20,6 @@ const LANGS = [
     value: 'de',
     label: 'German',
     icon: '/assets/icons/ic_flag_de.svg',
-  },
-  {
-    value: 'fr',
-    label: 'French',
-    icon: '/assets/icons/ic_flag_fr.svg',
   },
 ];
 

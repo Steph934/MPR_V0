@@ -10,6 +10,14 @@ import Page404 from './pages/Page404';
 import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 
+// import dashBoard from './pages/dashBoard';
+// import listing from './pages/listing';
+// import calendar from './pages/calendar';
+// import profil from './pages/profil';
+// import signin from './pages/signin';
+// import logIn from './pages/logIn';
+
+
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -23,6 +31,11 @@ export default function Router() {
         { path: 'user', element: <UserPage /> },
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },
+        // { path: 'DB', element: <dashBoard /> },
+        // { path: 'liste', element: <listing /> },
+        // { path: 'calendrier', element: <calendar /> },
+        // { path: 'profile', element: <profil /> },
+        // { path: 'inscription', element: <signin /> },
       ],
     },
     {

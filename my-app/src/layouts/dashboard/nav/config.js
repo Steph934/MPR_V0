@@ -1,41 +1,43 @@
 // component
-import SvgColor from '../../../components/svg-color';
+// 
+// 
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import PermIdentityIcon from '@mui/icons-material/PermIdentity';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 // ----------------------------------------------------------------------
 
-const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />;
 
 const navConfig = [
   {
     title: 'dashboard',
     path: '/dashboard/app',
-    icon: icon('ic_analytics'),
+    icon: <DashboardIcon />,
   },
   {
-    title: 'user',
+    title: 'ma liste',
+    path: '/dashboard/list',
+    icon: <ListAltIcon />,
+  },
+  {
+    title: 'mon calendrier',
+    path: '/dashboard/calendar',
+    icon: <CalendarMonthIcon />,
+  },
+  {
+    title: 'Profil',
     path: '/dashboard/user',
-    icon: icon('ic_user'),
+    icon: <PermIdentityIcon />,
   },
   {
-    title: 'product',
-    path: '/dashboard/products',
-    icon: icon('ic_cart'),
-  },
-  {
-    title: 'blog',
-    path: '/dashboard/blog',
-    icon: icon('ic_blog'),
-  },
-  {
-    title: 'login',
+    title: 'deconnexion',
     path: '/login',
-    icon: icon('ic_lock'),
-  },
-  {
-    title: 'Not found',
-    path: '/404',
-    icon: icon('ic_disabled'),
+    icon: <LogoutIcon />,
   },
 ];
 
+// ! https://mui.com/material-ui/material-icons/
+// TODO - HTTP Request error code préparé les pages en fonction des erreur de requêtes (403 ... 404)
 export default navConfig;
