@@ -1,13 +1,15 @@
+import React from "react";
+
 import { Helmet } from 'react-helmet-async';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Link, Container, Typography } from '@mui/material';
+import {  Container, Typography } from '@mui/material';
 // hooks
 import useResponsive from '../hooks/useResponsive';
 // components
 import Logo from '../components/logo';
 // sections
-import { LoginForm } from '../sections/auth/login';
+import { SignInForm } from '../sections/auth/signin';
 
 // ----------------------------------------------------------------------
 
@@ -37,30 +39,28 @@ const StyledContent = styled('div')(({ theme }) => ({
   padding: theme.spacing(12, 0),
 }));
 
-// ----------------------------------------------------------------------
-
-export default function LoginPage() {
+//MAIN COMPONENT
+const SignIn =  (props) => {
   const mdUp = useResponsive('up', 'md');
-
   return (
     <>
       <Helmet>
-        <title> Login | MPR 934 Project </title>
+        <title> SignIn | MPR 934 Project </title>
       </Helmet>
 
       <StyledRoot>
-        <Logo
+        <Logo 
           sx={{
             position: 'fixed',
-            top: { xs: 16, sm: 24, md: 40 },
-            left: { xs: 16, sm: 24, md: 40 },
+            top: {xs: 16, sm: 24, md:40},
+            left: {xs: 16, sm: 24, md:40},
           }}
         />
 
         {mdUp && (
           <StyledSection>
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Connecter vous pour accedez à l'app
+              Crée votre compte.
             </Typography>
             <img src="/assets/illustrations/exemple-un.png" alt="login" />
           </StyledSection>
@@ -68,20 +68,15 @@ export default function LoginPage() {
 
         <Container maxWidth="sm">
           <StyledContent>
-            <Typography variant="h4" gutterBottom>
-              Connection MPR 934
+            <Typography variant="h4" gutterBottom align="center">
+              Inscription MPR 934
             </Typography>
-
-            <Typography variant="body2" sx={{ mb: 5 }}>
-              Pas de compte ? {''}
-              <Link href='/signin' variant="subtitle2">Inscrivez-vous</Link>
-            </Typography>
-
-            
-            <LoginForm />
+            <SignInForm />
           </StyledContent>
         </Container>
       </StyledRoot>
     </>
-  );
-}
+    )
+};
+
+export default SignIn
