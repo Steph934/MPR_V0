@@ -6,72 +6,19 @@ import { LoadingButton } from '@mui/lab';
 // components
 import Iconify from '../../../components/iconify';
 import { makeStyles } from '@material-ui/core';
+import {
+  validatePseudo,
+  validateMail,
+  validatePassword,
+  validateConfirmation
+} from '../../../validator'
 
 
 // ----------------------------------------------------------------------
 
 
-const validatePassword = (password) => {
-  let message = null
-  let reg = /^[a-zA-Z0-9]+$/;
-
-  if (!(password.length >= 3 && password.length < 15)) {
-    message = 'Length error'
-  } else if (!reg.test(password)) {
-    message = 'Regex Error'
-  }
-
-  return message
-}
-
-const validateConfirmation = (password, password2) => {
-  let message = null
-  // setPasswordValidation(true)
-
-  if (password !== password2) {
-    message = 'match error'
-  } // else keep null if ok
-
-  return message
-}
-
-
-
-
-
-
 export default function SignInForm() {
   const navigate = useNavigate();
-
-  //! State 
-  const [showPassword, setShowPassword] = useState(false);
-
-
-  const [errorMSG, setErrorMSG] = useState({
-    pseudoError: '',
-    mailError: '',
-    passwordError: '',
-    confirmationError: ''
-  })
-
-  const [formData, setFormData] = useState({
-    pseudo: '',
-    email: '',
-    password: '',
-    password2: '',
-  });
-
-
-
-
-  const handleClick = () => {
-    navigate('/signin', { replace: true });
-
-    // TODO - plus tard - en cas de validation du serveur allez sur son dashboard
-
-    // établir une vérification des données rentré et si valide envoyé une request POST au formulaire d'incription afin de crée un utilisateur 
-  };
-
   const useStyles = makeStyles((theme) => ({
     container: {
       display: 'flex',
@@ -87,9 +34,46 @@ export default function SignInForm() {
       margin: theme.spacing(3, 0, 2),
     },
   }));
-
   const classes = useStyles();
 
+  //! State 
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMSG, setErrorMSG] = useState({
+    pseudoError: '',
+    mailError: '',
+    passwordError: '',
+    confirmationError: ''
+  })
+  const [formData, setFormData] = useState({
+    pseudo: '',
+    email: '',
+    password: '',
+    password2: '',
+  });
+  const [formTouched, setFormTouched] = useState({
+    pseudo: false,
+    email: false,
+    password: false,
+    password2: false,
+  });
+
+  // onFocus => au click sur le champs input => changé états de formTouched[name] = true
+  const handleFocusFormClick = (event) => {
+    const { name } = event.target;
+    setFormTouched({
+      ...formTouched,
+      [name]: true
+    })
+  }
+
+  const handleClick = () => {
+    navigate('/signin', { replace: true });
+
+    // TODO - plus tard - en cas de validation du serveur allez sur son dashboard
+
+    // établir une vérification des données rentré et si valide envoyé une request POST au formulaire d'incription afin de crée un utilisateur 
+  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -99,21 +83,6 @@ export default function SignInForm() {
     })
   };
 
-
-
-  useEffect(() => {
-    const passErrMsg = validatePassword(formData.password);
-    const confErrMsg = validateConfirmation(formData.password, formData.password2);
-
-    setErrorMSG(prevState => ({
-      ...prevState,
-      passwordError: passErrMsg,
-      confirmationError: confErrMsg
-    }))
-  }, [formData])
-
-  
-
   const handleSubmit = (event) => {
     event.preventDefault();
     console.group('Response form Sign')
@@ -121,6 +90,25 @@ export default function SignInForm() {
     console.groupEnd()
     // ici on peut ajouter l'envoie des données avec une requête HTTP
   };
+
+
+  useEffect(() => {
+    const pseudoErrMsg = validatePseudo(formData.pseudo);
+    const mailErrMsg = validateMail(formData.email);
+    const passErrMsg = validatePassword(formData.password);
+    const confErrMsg = validateConfirmation(formData.password, formData.password2);
+    setErrorMSG(prevState => ({
+      ...prevState,
+      // NOTE Ici j'ai un doute concernant le formTouched bon après ça fonctionne.
+      pseudoError: formTouched.pseudo ? pseudoErrMsg : null,
+      mailError: formTouched.email ? mailErrMsg : null,
+      passwordError: formTouched.password ? passErrMsg : null,
+      confirmationError: formTouched.password2 ? confErrMsg : null,
+    }))
+  }, [formData, formTouched])
+
+
+
 
   return (
     <>
@@ -136,6 +124,9 @@ export default function SignInForm() {
               type={'text'}
               fullWidth
               value={formData.pseudo}
+              error={errorMSG.pseudoError != null}
+              helperText={errorMSG != null ? errorMSG.pseudoError : undefined}
+              onFocus={handleFocusFormClick}
               onChange={handleChange}
               required
             />
@@ -149,6 +140,9 @@ export default function SignInForm() {
               label="Adresse email"
               name="email"
               value={formData.email}
+              error={errorMSG.mailError != null}
+              helperText={errorMSG != null ? errorMSG.mailError : undefined}
+              onFocus={handleFocusFormClick}
               onChange={handleChange}
             />
 
@@ -164,6 +158,7 @@ export default function SignInForm() {
               type={showPassword ? 'text' : 'password'}
               id="password"
               value={formData.password}
+              onFocus={handleFocusFormClick}
               onChange={handleChange}
               InputProps={{
                 endAdornment: (
@@ -182,6 +177,7 @@ export default function SignInForm() {
               label="Répéter votre mot de passe"
               value={formData.password2}
               onChange={handleChange}
+              onFocus={handleFocusFormClick}
               error={errorMSG.confirmationError != null}
               helperText={errorMSG != null ? errorMSG.confirmationError : undefined}
               type={showPassword ? 'text' : 'password'}
