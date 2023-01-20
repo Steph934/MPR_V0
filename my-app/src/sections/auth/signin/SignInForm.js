@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // @mui
 import { Stack, IconButton, InputAdornment, TextField, Box } from '@mui/material';
@@ -10,20 +10,55 @@ import { makeStyles } from '@material-ui/core';
 
 // ----------------------------------------------------------------------
 
+
+const validatePassword = (password) => {
+  let message = null
+  let reg = /^[a-zA-Z0-9]+$/;
+
+  if (!(password.length >= 3 && password.length < 15)) {
+    message = 'Length error'
+  } else if (!reg.test(password)) {
+    message = 'Regex Error'
+  }
+
+  return message
+}
+
+const validateConfirmation = (password, password2) => {
+  let message = null
+  // setPasswordValidation(true)
+
+  if (password !== password2) {
+    message = 'match error'
+  } // else keep null if ok
+
+  return message
+}
+
+
+
+
+
+
 export default function SignInForm() {
   const navigate = useNavigate();
 
   //! State 
   const [showPassword, setShowPassword] = useState(false);
 
-  const [passwordValidation, setPasswordValidation] = useState(false);
 
-  const [errorMSG, setErrorMSG] = useState('')
+  const [errorMSG, setErrorMSG] = useState({
+    pseudoError: '',
+    mailError: '',
+    passwordError: '',
+    confirmationError: ''
+  })
 
   const [formData, setFormData] = useState({
     pseudo: '',
     email: '',
     password: '',
+    password2: '',
   });
 
 
@@ -61,26 +96,23 @@ export default function SignInForm() {
     setFormData({
       ...formData,
       [name]: value,
-    });
+    })
   };
 
 
-  const comparePassword = (e) => {
-    const { name, value } = e.target;
 
-    if (name === 'password'){
-      let reg = /^[a-zA-Z0-9]+$/;
-      if (!reg.test(value)){
-        setErrorMSG("le pseudo ne doit contenir que des caractères alphanumériques")
-        return setPasswordValidation(true)
-      }
-      if(value.length < 3 || value.length > 15){
-        setErrorMSG("le pseudo doit avoir entre 3 et 15 caractères")
-        return setPasswordValidation(true)
-     }
-      return setPasswordValidation(false)
-    }
-  }
+  useEffect(() => {
+    const passErrMsg = validatePassword(formData.password);
+    const confErrMsg = validateConfirmation(formData.password, formData.password2);
+
+    setErrorMSG(prevState => ({
+      ...prevState,
+      passwordError: passErrMsg,
+      confirmationError: confErrMsg
+    }))
+  }, [formData])
+
+  
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -101,7 +133,7 @@ export default function SignInForm() {
               id='pseudo'
               name="pseudo"
               label="Pseudo"
-              type={'test'}
+              type={'text'}
               fullWidth
               value={formData.pseudo}
               onChange={handleChange}
@@ -127,11 +159,12 @@ export default function SignInForm() {
               fullWidth
               name="password"
               label="Mot de passe"
+              error={errorMSG.passwordError != null}
+              helperText={errorMSG != null ? errorMSG.passwordError : undefined}
               type={showPassword ? 'text' : 'password'}
               id="password"
               value={formData.password}
               onChange={handleChange}
-              onFocus={comparePassword}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -144,12 +177,13 @@ export default function SignInForm() {
             />
 
             <TextField
-              name="password"
+              id="password2"
+              name="password2"
               label="Répéter votre mot de passe"
-              onChange={comparePassword}
-              onFocus={comparePassword}
-              error={passwordValidation}
-              helperText={passwordValidation && errorMSG }
+              value={formData.password2}
+              onChange={handleChange}
+              error={errorMSG.confirmationError != null}
+              helperText={errorMSG != null ? errorMSG.confirmationError : undefined}
               type={showPassword ? 'text' : 'password'}
               InputProps={{
                 endAdornment: (
