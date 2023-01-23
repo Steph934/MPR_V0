@@ -29,7 +29,7 @@ export const validateMail = (email) => {
     let reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     if (!reg.test(email)) {
-        message = "N'est pas conforme"
+        message = "N'est pas conforme au format Email"
     } // else keep null if ok
 
     return message
@@ -45,6 +45,7 @@ function checkStringPass(str) {
     let hasUpper = false;
     let hasNumber = false;
 
+
     for (let i = 0; i < str.length; i++) {
         if (str[i] >= 'a' && str[i] <= 'z') {
             hasLower = true;
@@ -54,7 +55,6 @@ function checkStringPass(str) {
             hasNumber = true;
         }
     }
-
     return hasLower && hasUpper && hasNumber;
 }
 
@@ -69,14 +69,14 @@ export const validatePassword = (password) => {
     let message = null
     let reg = /^[a-zA-Z0-9]+$/;
 
-    if (password.length < 3) {
-        message = 'le mot de passe doit avoir une taille minimal de 3 caractère '
-    } else if (!reg.test(password)) {
-        message = "N'est pas conforme"
+    if (password.length < 3 || password.length > 50) {
+        message = 'le mot de passe doit avoir une taille minimal de 3 caractères et pas plus de 50 '
     } else if (!checkStringPass(password)) {
         message = "Le mot de passe doit contenir au minimum une majuscule, une minuscule et un chiffre"
+    } else if (!reg.test(password)) {
+        message = "N'est pas conforme doit contenir au minimum une majuscule, une minuscule et un chiffre"
     } // else keep null if ok
-
+        
     return message
 }
 /**
@@ -93,4 +93,15 @@ export const validateConfirmation = (password, password2) => {
     } // else keep null if ok
 
     return message
+}
+
+export const validateForm = (errorMSG) => {
+    console.log(errorMSG)
+    for (const key in errorMSG) {
+        console.log(`${key} : ${errorMSG[key]} `);
+        if (errorMSG[key] !== null) {
+            return false
+        }
+    }
+    return true
 }

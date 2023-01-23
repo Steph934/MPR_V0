@@ -2,7 +2,8 @@
 
 const account = {
   displayName: 'Jaydon Frankie',
-  email: 'demo@minimals.cc',
+  email: 'bulshitMail@daim.cum',
+  password: 'Aa11aA',
   photoURL: '/assets/images/avatars/avatar_default.jpg',
 };
 
