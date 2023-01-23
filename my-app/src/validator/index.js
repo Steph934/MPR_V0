@@ -9,9 +9,10 @@ export const validatePseudo = (pseudo) => {
     let reg = /^[a-zA-Z0-9]+$/;
 
     if (!reg.test(pseudo)) {
-        message = 'Regex Pseudo Error'
-    } // else keep null if ok
-
+        message = 'Le pseudo doit contenir des caractères alphanumérique c\'est à dire a-z A-Z et peut également contenir des chiffres entre 0-9'
+    } else if (pseudo.length < 3) {
+        message = 'Le pseudo doit contenir minimum 3 caractères'
+    }// else keep null if ok
     return message
 }
 
@@ -35,6 +36,29 @@ export const validateMail = (email) => {
 }
 
 /**
+ * Methode lié à validatePassword() permettant de checker s'il contient minuscule, majuscule et un chiffre 
+ * @param {string} str 
+ * @returns {boolean}
+ */
+function checkStringPass(str) {
+    let hasLower = false;
+    let hasUpper = false;
+    let hasNumber = false;
+
+    for (let i = 0; i < str.length; i++) {
+        if (str[i] >= 'a' && str[i] <= 'z') {
+            hasLower = true;
+        } else if (str[i] >= 'A' && str[i] <= 'Z') {
+            hasUpper = true;
+        } else if (str[i] >= '0' && str[i] <= '9') {
+            hasNumber = true;
+        }
+    }
+
+    return hasLower && hasUpper && hasNumber;
+}
+
+/**
  * 
  * @param {string} password 
  * validateur qui prend en paramètre un mot de passe et vérifie si les Regex et la taille sont conforme.
@@ -45,10 +69,12 @@ export const validatePassword = (password) => {
     let message = null
     let reg = /^[a-zA-Z0-9]+$/;
 
-    if (!(password.length >= 3 && password.length < 15)) {
-        message = 'Length error'
+    if (password.length < 3) {
+        message = 'le mot de passe doit avoir une taille minimal de 3 caractère '
     } else if (!reg.test(password)) {
-        message = 'Regex Error'
+        message = "N'est pas conforme"
+    } else if (!checkStringPass(password)) {
+        message = "Le mot de passe doit contenir au minimum une majuscule, une minuscule et un chiffre"
     } // else keep null if ok
 
     return message
