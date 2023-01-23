@@ -1,3 +1,8 @@
+import {
+    account,
+    accounts
+} from '../_mock/account'
+
 /**
  * 
  * @param {string} pseudo 
@@ -12,7 +17,7 @@ export const validatePseudo = (pseudo) => {
         message = 'Le pseudo doit contenir des caractères alphanumérique c\'est à dire a-z A-Z et peut également contenir des chiffres entre 0-9'
     } else if (pseudo.length < 3) {
         message = 'Le pseudo doit contenir minimum 3 caractères'
-    }// else keep null if ok
+    } // else keep null if ok
     return message
 }
 
@@ -105,15 +110,70 @@ export const validateForm = (errorMSG) => {
     }
     return true
 }
+//   - - - Donnée account - - - 
+//   email: 'bulshitMail@daim.cum',
+//   password: 'Aa11aA',
 
-export const validMail = (email) => {
+const validMail = (email) => {
+    let message = null
+    let mailAccount = account.email
+    if (email !== mailAccount) {
+        message = "Votre Adresse mail n'existe pas, veuillez créer un compte"
+    }
+    return message
     // Vérifier la validité du mail écrit avec le mail de -mock/account
 }
 
-export const validPassword = (Password) => {
+const validPassword = (password) => {
+    let message = null
+    let passAccount = account.email
+    if (password !== passAccount) {
+        message = "Votre Mot de passe est éronné, veuillez le saisir à nouveau"
+    }
+    return message
     // Vérifier la validité du mail écrit avec le mail de -mock/account
 }
 
-export const validAccount = (email, Password) => {
-    // Vérifier la validité du mail écrit avec le mail de -mock/account
+// export const validAccount = (email, password) => {
+//     let message = null
+//     let mailAccount = account.email
+//     let passAccount = account.password
+//     if (password == passAccount) {
+
+//     } else if (mailAccount == email) {
+
+//     }
+//     //  else if (mailAccount.id === passAccount.id) {
+
+//     // }     
+    
+//     else {
+//         message = "Votre compte n'existe pas ou votre saisie est éronnée. Rééssayez !"
+//     }
+//     return message
+//     // Vérifier la validité du mail écrit avec le mail de -mock/account
+// }
+
+export const validAccount = (email, password) => {
+    let message = null
+   if (validPassword(password) === null && validMail(email) === null) {
+    message = "valideAccount2"
+   } 
+   accounts.map((account) => account.email === email && account.password === password ? message = "OK" : "BAD" )
+   
+// équivalence du map avec un for    
+//    for (let i = 0; i < accounts.length; i++) {
+//     const account = accounts[i];
+//     let isMatchingMail = false;
+//     let isMatchingPass = false;
+//     if (account.email === email) {
+//         isMatchingMail = true
+//     } else if (account.password === password) {
+//         isMatchingPass = true
+//     }
+//     if (isMatchingMail && isMatchingPass) {
+//         message = "OK"
+//     }
+//    }
+ return message
 }

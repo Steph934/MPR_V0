@@ -7,9 +7,7 @@ import { LoadingButton } from '@mui/lab';
 import Iconify from '../../../components/iconify';
 import {
   validateMail,
-  validMail,
-	validPassword,
-	validAccount,
+ 	validAccount,
   // Comparaison avec les id et mdp ./account.js
 } from '../../../validator'
 
@@ -21,11 +19,9 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [unvalidMSG, setUnvalidMSG,] = useState({
     mailError: null, 
-    unvalidMail:null,
-    unvalidPassword: null,
     unvalidAccount: null,
   })
-  const [formData] = useState({
+  const [formData, setFormData] = useState({
     email: '',
 		password: '',
   })
@@ -35,14 +31,18 @@ export default function LoginForm() {
     navigate('/dashboard', { replace: true });
     setValidForm(isValidAccount)
   };
-
+  const handleChange = (event) => {
+		const { name, value } = event.target;
+		setFormData({
+			...formData,
+			[name]: value,
+		})
+	};
 
   useEffect(() => {
     setUnvalidMSG(prevState => ({
       ...prevState,      
       mailError: validateMail (formData.email),
-      unvalidMail: validMail (formData.email) , 
-      unvalidPassword: validPassword (formData.password),
       unvalidAccount: validAccount (formData.email, formData.password),
       
     }))
@@ -51,7 +51,19 @@ export default function LoginForm() {
   return (
     <>
       <Stack spacing={3}>
-        <TextField name="email" label="Email" />
+        <TextField 
+        name="email" 
+        label="Email"
+        variant='outlined'
+        margin='normal'
+        fullWidth
+        id="email"
+        value={formData.email}
+        onChange={handleChange}
+        error={formData.email && unvalidMSG.mailError != null}
+        helperText={formData.email && unvalidMSG.mailError != null ? unvalidMSG.mailError : undefined}
+        required
+        />
 
         <TextField
           name="password"
