@@ -1,10 +1,17 @@
-import { useState } from 'react';
+import { useEffect,useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // @mui
 import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // components
 import Iconify from '../../../components/iconify';
+import {
+  validateMail,
+  validMail,
+	validPassword,
+	validAccount,
+  // Comparaison avec les id et mdp ./account.js
+} from '../../../validator'
 
 // ----------------------------------------------------------------------
 
@@ -12,10 +19,34 @@ export default function LoginForm() {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [unvalidMSG, setUnvalidMSG,] = useState({
+    mailError: null, 
+    unvalidMail:null,
+    unvalidPassword: null,
+    unvalidAccount: null,
+  })
+  const [formData] = useState({
+    email: '',
+		password: '',
+  })
+  const [isValidAccount, setValidForm] = useState (false)
 
   const handleClick = () => {
     navigate('/dashboard', { replace: true });
+    setValidForm(isValidAccount)
   };
+
+
+  useEffect(() => {
+    setUnvalidMSG(prevState => ({
+      ...prevState,      
+      mailError: validateMail (formData.email),
+      unvalidMail: validMail (formData.email) , 
+      unvalidPassword: validPassword (formData.password),
+      unvalidAccount: validAccount (formData.email, formData.password),
+      
+    }))
+  }, [formData])
 
   return (
     <>

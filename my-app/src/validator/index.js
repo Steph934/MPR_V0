@@ -76,7 +76,7 @@ export const validatePassword = (password) => {
     } else if (!reg.test(password)) {
         message = "N'est pas conforme doit contenir au minimum une majuscule, une minuscule et un chiffre"
     } // else keep null if ok
-        
+
     return message
 }
 /**
@@ -104,4 +104,16 @@ export const validateForm = (errorMSG) => {
         }
     }
     return true
+}
+
+export const validMail = (email) => {
+    // Vérifier la validité du mail écrit avec le mail de -mock/account
+}
+
+export const validPassword = (Password) => {
+    // Vérifier la validité du mail écrit avec le mail de -mock/account
+}
+
+export const validAccount = (email, Password) => {
+    // Vérifier la validité du mail écrit avec le mail de -mock/account
 }

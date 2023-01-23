@@ -13,7 +13,7 @@ import {
 	validateConfirmation,
 	validateForm
 } from '../../../validator'
-import BasicModal from 'src/components/modal';
+// import BasicModal from 'src/components/modal';
 
 
 // ----------------------------------------------------------------------
