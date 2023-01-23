@@ -29,7 +29,7 @@ export const validateMail = (email) => {
     let reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     if (!reg.test(email)) {
-        message = 'Regex Mail Error'
+        message = "N'est pas conforme"
     } // else keep null if ok
 
     return message
@@ -89,7 +89,7 @@ export const validatePassword = (password) => {
 export const validateConfirmation = (password, password2) => {
     let message = null
     if (password !== password2) {
-        message = 'match error'
+        message = 'les mots de passe ne sont pas identique'
     } // else keep null if ok
 
     return message
