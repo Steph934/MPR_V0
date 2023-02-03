@@ -13,9 +13,8 @@ import {
 	validateConfirmation,
 	validateForm
 } from '../../../validator'
-// import BasicModal from 'src/components/modal';
 
-
+import { test, testPost } from '../../../services/user/UserServices'
 // ----------------------------------------------------------------------
 
 
@@ -38,8 +37,6 @@ export default function SignInForm() {
 	}));
 	const classes = useStyles();
 
-	//! State 
-
 	const [showPassword, setShowPassword] = useState(false);
 	const [errorMSG, setErrorMSG] = useState({
 		pseudoError: null,
@@ -47,7 +44,7 @@ export default function SignInForm() {
 		passwordError: null,
 		confirmationError: null
 	})
-	const [formData, setFormData] = useState({
+	const [formControl, setFormControl] = useState({
 		pseudo: '',
 		email: '',
 		password: '',
@@ -59,10 +56,12 @@ export default function SignInForm() {
 		password: false,
 		password2: false,
 	});
-
+	
 	const [validForm, setValidForm] = useState(false)
-
-	// onFocus => au click sur le champs input => changé états de formTouched[name] = true
+	const [message, setMessage] = useState('Inscription CONFORME LA PUTAIN DE TOI')
+	
+	const [formData, setFormData] = useState({});
+	
 	const handleFocusFormClick = (event) => {
 		const { name } = event.target;
 		setFormTouched({
@@ -75,42 +74,46 @@ export default function SignInForm() {
 		
 		navigate('/signin', { replace: true });
 		
-		// TODO - handleClick
 		setValidForm(validateForm(errorMSG))
-		// Faire valider le formulaire & controler
-		// Afficher le ou les messages d'erreur ou de succes à l'inscription
-		// Après lecture du modal puis fermeture redirection /login
-		// Ou après un certain temps (timer) redirection /login
-		// établir une vérification des données rentré et si valide envoyé une request POST au formulaire d'incription afin de crée un utilisateur 
-
+	
+		
 	};
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
-		setFormData({
-			...formData,
+		setFormControl({
+			...formControl,
 			[name]: value,
 		})
 	};
 
 	const handleSubmit = (event) => {
-		event.preventDefault();
-		console.group('Response form Sign')
-		console.log(formData);
-		console.groupEnd()
-		// ici on peut ajouter l'envoie des données avec une requête HTTP
+		event.preventDefault(); // TODO enlever la possibilité de validé le formulaire avec la touche ENTRER
+		// console.group('Response formCONTROLE')
+		// console.log(formControl.pseudo, formControl.email, formControl.password);
+
+		// console.groupEnd()
+
+		 if (validForm) {
+			
+			let test = testPost({pseudo :formControl.pseudo,email: formControl.email,password: formControl.password})
+			// if (condition) {
+				console.log('TEST : ',test);
+			// }
+		 }
+		
 	};
 
 
 	useEffect(() => {
 		setErrorMSG(prevState => ({
 			...prevState,
-			pseudoError: validatePseudo(formData.pseudo),
-			mailError: validateMail(formData.email),
-			passwordError: validatePassword(formData.password),
-			confirmationError: validateConfirmation(formData.password, formData.password2),
+			pseudoError: validatePseudo(formControl.pseudo),
+			mailError: validateMail(formControl.email),
+			passwordError: validatePassword(formControl.password),
+			confirmationError: validateConfirmation(formControl.password, formControl.password2),
 		}))
-	}, [formData])
+	}, [formControl])
 
 
 	return (
@@ -126,7 +129,7 @@ export default function SignInForm() {
 							label="Pseudo"
 							type={'text'}
 							fullWidth
-							value={formData.pseudo}
+							value={formControl.pseudo}
 							error={formTouched.pseudo && errorMSG.pseudoError != null}
 							helperText={formTouched.pseudo && errorMSG.pseudoError != null ? errorMSG.pseudoError : undefined}
 							onFocus={handleFocusFormClick}
@@ -142,7 +145,7 @@ export default function SignInForm() {
 							id="email"
 							label="Adresse email"
 							name="email"
-							value={formData.email}
+							value={formControl.email}
 							error={formTouched.email && errorMSG.mailError != null}
 							helperText={formTouched.email && errorMSG.mailError != null ? errorMSG.mailError : undefined}
 							onFocus={handleFocusFormClick}
@@ -160,7 +163,7 @@ export default function SignInForm() {
 							helperText={formTouched.password && errorMSG.passwordError != null ? errorMSG.passwordError : undefined}
 							type={showPassword ? 'text' : 'password'}
 							id="password"
-							value={formData.password}
+							value={formControl.password}
 							onFocus={handleFocusFormClick}
 							onChange={handleChange}
 							InputProps={{
@@ -178,7 +181,7 @@ export default function SignInForm() {
 							id="password2"
 							name="password2"
 							label="Répéter votre mot de passe"
-							value={formData.password2}
+							value={formControl.password2}
 							onChange={handleChange}
 							onFocus={handleFocusFormClick}
 							error={formTouched.password2 && errorMSG.confirmationError != null}
@@ -210,7 +213,7 @@ export default function SignInForm() {
 				</form>
 
 			
-				{validForm && <p>Inscription CONFORME LA PUTAIN DE TOI</p> }
+				{validForm && <p>{message}</p> }
 			
 
 			</Box>
