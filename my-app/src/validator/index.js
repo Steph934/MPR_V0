@@ -101,9 +101,9 @@ export const validateConfirmation = (password, password2) => {
 }
 
 export const validateForm = (errorMSG) => {
-    console.log(errorMSG)
+    // console.log(errorMSG)
     for (const key in errorMSG) {
-        console.log(`${key} : ${errorMSG[key]} `);
+        // console.log(`${key} : ${errorMSG[key]} `);
         if (errorMSG[key] !== null) {
             return false
         }

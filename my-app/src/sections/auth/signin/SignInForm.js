@@ -14,7 +14,7 @@ import {
 	validateForm
 } from '../../../validator'
 
-import { test, testPost } from '../../../services/user/UserServices'
+import { signUp } from '../../../services/user/UserServices'
 // ----------------------------------------------------------------------
 
 
@@ -60,7 +60,7 @@ export default function SignInForm() {
 	const [validForm, setValidForm] = useState(false)
 	const [message, setMessage] = useState('Inscription CONFORME LA PUTAIN DE TOI')
 	
-	const [formData, setFormData] = useState({});
+	// const [formData, setFormData] = useState({});
 	
 	const handleFocusFormClick = (event) => {
 		const { name } = event.target;
@@ -95,13 +95,19 @@ export default function SignInForm() {
 		// console.groupEnd()
 
 		 if (validForm) {
+      let signForm = {pseudo :formControl.pseudo,email: formControl.email,password: formControl.password}
 			
-			let test = testPost({pseudo :formControl.pseudo,email: formControl.email,password: formControl.password})
-			// if (condition) {
-				console.log('TEST : ',test);
-			// }
+        signUp(signForm)
+          .then(response => {
+            console.log(response.data.message);
+            setMessage(response.data.message)
+          })
+          .catch(err => {
+            const { response } = err;
+            console.log(response.data.message);
+            setMessage(response.data.message)
+          })
 		 }
-		
 	};
 
 
