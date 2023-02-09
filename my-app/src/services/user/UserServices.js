@@ -11,19 +11,3 @@ export const signUp = (params) => {
     const myP =  apiMPR.post('http://localhost:8080/signup', params)
     return myP
 } 
-
-
-export const test = {
-    async signup(params) {
-        try {
-            // apiMPR.defaults.headers.common['Authorizations'] = '';
-            const response = await apiMPR.post('/signup', params);
-
-            return console.log(response)
-        } catch (error) {
-            return error.response
-        }
-    }
-}
-
-export default test

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // @mui
 import { Stack, IconButton, InputAdornment, TextField, Box } from '@mui/material';
@@ -15,6 +15,7 @@ import {
 } from '../../../validator'
 
 import { signUp } from '../../../services/user/UserServices'
+import DirectionSnackbar from 'src/components/snack';
 // ----------------------------------------------------------------------
 
 
@@ -56,12 +57,12 @@ export default function SignInForm() {
 		password: false,
 		password2: false,
 	});
-	
+
 	const [validForm, setValidForm] = useState(false)
 	const [message, setMessage] = useState('Inscription CONFORME LA PUTAIN DE TOI')
-	
+
 	// const [formData, setFormData] = useState({});
-	
+
 	const handleFocusFormClick = (event) => {
 		const { name } = event.target;
 		setFormTouched({
@@ -71,12 +72,12 @@ export default function SignInForm() {
 	}
 
 	const handleClick = () => {
-		
+
 		navigate('/signin', { replace: true });
-		
+
 		setValidForm(validateForm(errorMSG))
-	
-		
+
+
 	};
 
 	const handleChange = (event) => {
@@ -87,6 +88,9 @@ export default function SignInForm() {
 		})
 	};
 
+	const [submit, setSubmit] = useState(false)
+
+
 	const handleSubmit = (event) => {
 		event.preventDefault(); // TODO enlever la possibilité de validé le formulaire avec la touche ENTRER
 		// console.group('Response formCONTROLE')
@@ -94,20 +98,22 @@ export default function SignInForm() {
 
 		// console.groupEnd()
 
-		 if (validForm) {
-      let signForm = {pseudo :formControl.pseudo,email: formControl.email,password: formControl.password}
+		if (validForm) {
+			let signForm = { pseudo: formControl.pseudo, email: formControl.email, password: formControl.password }
 			
-        signUp(signForm)
-          .then(response => {
-            console.log(response.data.message);
-            setMessage(response.data.message)
-          })
-          .catch(err => {
-            const { response } = err;
-            console.log(response.data.message);
-            setMessage(response.data.message)
-          })
-		 }
+			setSubmit(true)
+
+			signUp(signForm)
+				.then(response => {
+					console.log(response.data.message);
+					setMessage(response.data.message)
+				})
+				.catch(err => {
+					const { response } = err;
+					console.log(response.data.message);
+					setMessage(response.data.message)
+				})
+			}
 	};
 
 
@@ -120,7 +126,6 @@ export default function SignInForm() {
 			confirmationError: validateConfirmation(formControl.password, formControl.password2),
 		}))
 	}, [formControl])
-
 
 	return (
 		<>
@@ -218,9 +223,10 @@ export default function SignInForm() {
 					</Stack>
 				</form>
 
-			
-				{validForm && <p>{message}</p> }
-			
+				{
+					 submit && <DirectionSnackbar props={{ isOpen: validForm, setMessage:  message }} />
+				}
+
 
 			</Box>
 
