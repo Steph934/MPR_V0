@@ -4,6 +4,7 @@ import axios from 'axios';
 const apiMPR = axios.create({
     baseURL: 'http://localhost:8080',
     timeout: 10000,
+<<<<<<< HEAD
     Headers: {
         "Access-Control-Allow-Origin": "true"
     },
@@ -49,3 +50,12 @@ export const test = {
 }
 
 export default test
+=======
+    Headers: {"Access-Control-Allow-Origin": "true"},
+});
+
+export const signUp = (params) => {
+    const myP =  apiMPR.post('http://localhost:8080/signup', params)
+    return myP
+} 
+>>>>>>> 9e5b8bf8b15aafac64d8f513403f3a394310b183
